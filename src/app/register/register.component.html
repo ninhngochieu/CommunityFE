@@ -8,8 +8,8 @@
   <div class="form-group">
     <label for="">Bạn thích ai nhất</label>
     <select name="" id="" class="form-control">
-      <option *ngFor="let user of this.userFromHome" [value]="user.token">
-        {{user.username}}
+      <option *ngFor="let user of this.userFromHome">
+        {{user.userName}}
       </option>
     </select>
   </div>

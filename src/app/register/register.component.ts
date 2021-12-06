@@ -1,6 +1,7 @@
 import {Component, Input, OnInit, Output,EventEmitter} from '@angular/core';
 import {User} from "../core/model/User";
 import {AccountService} from "../core/services/account.service";
+import {Member} from "../core/model/Member";
 
 @Component({
   selector: 'app-register',
@@ -8,7 +9,7 @@ import {AccountService} from "../core/services/account.service";
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
-  @Input() userFromHome!: User[];
+  @Input() userFromHome!: Member[];
   @Output() cancelRegister = new EventEmitter()
   model = {
     username: "",

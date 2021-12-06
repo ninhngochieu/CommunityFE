@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {User} from "../core/model/User";
 import {AccountService} from "../core/services/account.service";
+import {Member} from "../core/model/Member";
 
 @Component({
   selector: 'app-home',
@@ -9,7 +10,7 @@ import {AccountService} from "../core/services/account.service";
 })
 export class HomeComponent implements OnInit {
   public isRegister: boolean = false;
-  users!: User[];
+  users!: Member[];
   constructor(private accountService: AccountService) { }
 
   ngOnInit(): void {
@@ -21,7 +22,7 @@ export class HomeComponent implements OnInit {
   }
 
   private getUsers() {
-    this.accountService.getUserList().subscribe((users: User[]) => {
+    this.accountService.getUserList().subscribe((users: Member[]) => {
       this.users = users;
       console.log(users)
     });

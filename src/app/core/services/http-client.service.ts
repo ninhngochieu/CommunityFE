@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse, HttpHeaders} from "@angular/common/http";
 import {catchError, map} from "rxjs/operators";
 import {async, Observable, of, Subject} from "rxjs";
 import {ToastrService} from "ngx-toastr";
+import {environment} from "../../../environments/environment";
+import {User} from "../model/User";
 
 export enum Type{
   post,
@@ -16,7 +18,7 @@ export enum Type{
   providedIn: 'root'
 })
 export class HttpClientService {
-  private baseUrl = "https://localhost:5001/api/";
+  private baseUrl = environment.baseUrl;
   private CONNECTION_ERR = "Vui lòng kiểm tra lại đường truyền";
   private PARAMETER_ERR ="Tham số không hợp lệ";
   private AUTHENTICATION_ERR = "Lỗi phân quyền";
@@ -40,20 +42,20 @@ export class HttpClientService {
   }
 
   private post(action: string, data: any) {
-    return this.httpClient.post(this.baseUrl + action, data)
+    return this.httpClient.post(this.baseUrl + action, data, this.httpOptions())
   }
 
   private get(action: string) {
-    return this.httpClient.get(this.baseUrl + action)
+    return this.httpClient.get(this.baseUrl + action, this.httpOptions())
   }
 
   private put(action: string, data: any) {
-    return this.httpClient.put(this.baseUrl + action, data)
+    return this.httpClient.put(this.baseUrl + action, data, this.httpOptions())
 
   }
 
   private delete(action: string, data: any) {
-    return this.httpClient.delete(this.baseUrl + action, data)
+    return this.httpClient.delete(this.baseUrl + action, this.httpOptions())
 
   }
 
@@ -78,5 +80,16 @@ export class HttpClientService {
       }
     }
     return new Subject();
+  }
+
+  private httpOptions() {
+
+    let token = (JSON.parse(<string>localStorage.getItem("user")) as User)?.token ?? "";
+
+    return {
+      headers: new HttpHeaders({
+        Authorization: `Bearer ${token}`
+      })
+    };
   }
 }

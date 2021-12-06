@@ -3,6 +3,7 @@ import {HttpClientService, Type} from "./http-client.service";
 import {User} from "../model/User";
 import {Router} from "@angular/router";
 import {Observable, Subject} from 'rxjs';
+import {Member} from "../model/Member";
 
 @Injectable({
   providedIn: 'root'

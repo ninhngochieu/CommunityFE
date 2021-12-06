@@ -8,10 +8,11 @@ import {MemberDetailComponent} from "./members/member-detail/member-detail.compo
 import {ListsComponent} from "./lists/lists.component";
 import {MessagesComponent} from "./messages/messages.component";
 import {AuthGuard} from "./core/guards/auth.guard";
+import {NotFoundComponent} from "./not-found/not-found.component";
 
 
 let routers: Routes = [
-  {path: "", component: HomeComponent, },
+  {path: "", component: HomeComponent, pathMatch: "full"},
   {path:"", runGuardsAndResolvers: 'always', canActivate: [AuthGuard], children: [
       {path: "members", component: MemberListComponent},
       {path: "members/:id", component: MemberDetailComponent},
@@ -19,7 +20,7 @@ let routers: Routes = [
       {path: "messages", component: MessagesComponent},
     ]
   },
-  {path: "**", component: HomeComponent, pathMatch: "full"},
+  {path: "**", component: NotFoundComponent},
 
 ]
 
