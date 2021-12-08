@@ -9,17 +9,21 @@ import {ListsComponent} from "./lists/lists.component";
 import {MessagesComponent} from "./messages/messages.component";
 import {AuthGuard} from "./core/guards/auth.guard";
 import {NotFoundComponent} from "./not-found/not-found.component";
+import {MemberEditComponent} from "./members/member-edit/member-edit.component";
+import {PreventUnsavedChangesGuard} from "./core/guards/prevent-unsaved-changes.guard";
 
 
 let routers: Routes = [
   {path: "", component: HomeComponent, pathMatch: "full"},
   {path:"", runGuardsAndResolvers: 'always', canActivate: [AuthGuard], children: [
       {path: "members", component: MemberListComponent},
-      {path: "members/:id", component: MemberDetailComponent},
+      {path: "members/:username", component: MemberDetailComponent},
+      {path: "member/edit", component: MemberEditComponent, canDeactivate: [PreventUnsavedChangesGuard]},
       {path: "lists", component: ListsComponent},
       {path: "messages", component: MessagesComponent},
     ]
   },
+  {path: "notfound", component: NotFoundComponent},
   {path: "**", component: NotFoundComponent},
 
 ]

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import {HttpClientModule} from "@angular/common/http";
 import {BsDropdownModule} from "ngx-bootstrap/dropdown";
 import {ToastrModule} from "ngx-toastr";
+import {TabsModule} from "ngx-bootstrap/tabs";
 
 
 
@@ -14,7 +15,7 @@ import {ToastrModule} from "ngx-toastr";
     BsDropdownModule.forRoot(),
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right'
-    })
+    }),
   ],
   exports:[HttpClientModule,BsDropdownModule, ToastrModule]
 })

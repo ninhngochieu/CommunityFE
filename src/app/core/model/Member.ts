@@ -1,3 +1,9 @@
+export interface Photo {
+  id: number,
+  url: string,
+  isMain: boolean
+}
+
 export interface Member {
   id: number;
   userName: string;
@@ -11,5 +17,5 @@ export interface Member {
   city: string;
   country: string;
   photoUrl: string;
-  photos: []
+  photos: Photo[]
 }

@@ -5,6 +5,7 @@ import {async, Observable, of, Subject} from "rxjs";
 import {ToastrService} from "ngx-toastr";
 import {environment} from "../../../environments/environment";
 import {User} from "../model/User";
+import {Router} from "@angular/router";
 
 export enum Type{
   post,
@@ -26,7 +27,7 @@ export class HttpClientService {
   private NOT_FOUND_ERROR = "Không tìm thấy tài nguyên";
   private SERVER_ERR = "Server xảy ra lỗi";
 
-  constructor(protected httpClient: HttpClient, private toastrService:ToastrService) { }
+  constructor(protected httpClient: HttpClient, private toastService:ToastrService, private router: Router) { }
 
   request(type: Type, action: string, data?: any) {
     switch (type){
@@ -63,20 +64,26 @@ export class HttpClientService {
   private ProcessError(e: HttpErrorResponse) {
     console.log(e)
     if(e.error?.data){
-      this.toastrService.error(e.error.data);
+      this.toastService.error(e.error.data);
+      switch (e.error.statusCode){
+        case 404:
+          this.router.navigateByUrl("/notfound").then(r=>r);
+          break
+      }
     }else {
       switch (e.status){
-        case 0: this.toastrService.error(this.CONNECTION_ERR)
+        case 0: this.toastService.error(this.CONNECTION_ERR)
           break;
-        case 400: this.toastrService.warning(this.PARAMETER_ERR)
+        case 400: this.toastService.warning(this.PARAMETER_ERR)
           break;
-        case 401: this.toastrService.warning(this.AUTHENTICATION_ERR)
+        case 401: this.toastService.warning(this.AUTHENTICATION_ERR)
           break;
-        case 403: this.toastrService.error(this.FORBIDDEN_RESOURCE_ERR)
+        case 403: this.toastService.error(this.FORBIDDEN_RESOURCE_ERR)
           break;
-        case 404: this.toastrService.error(this.NOT_FOUND_ERROR)
+        case 404:
+          this.toastService.error(this.NOT_FOUND_ERROR);
           break;
-        case 500: this.toastrService.error(this.SERVER_ERR)
+        case 500: this.toastService.error(this.SERVER_ERR)
       }
     }
     return new Subject();

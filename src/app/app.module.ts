@@ -18,6 +18,9 @@ import {ToastrModule} from "ngx-toastr";
 import {SharedModule} from "./core/shared.module";
 import { NotFoundComponent } from './not-found/not-found.component';
 import { MemberCardComponent } from './members/member-card/member-card.component';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+import {NgxGalleryModule} from "@kolkov/ngx-gallery";
+import { MemberEditComponent } from './members/member-edit/member-edit.component';
 
 @NgModule({
   declarations: [
@@ -30,14 +33,17 @@ import { MemberCardComponent } from './members/member-card/member-card.component
     ListsComponent,
     MessagesComponent,
     NotFoundComponent,
-    MemberCardComponent
+    MemberCardComponent,
+    MemberEditComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     FormsModule,
-    SharedModule
+    SharedModule,
+    TabsModule.forRoot(),
+    NgxGalleryModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

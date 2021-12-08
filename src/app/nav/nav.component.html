@@ -7,16 +7,16 @@
     <div class="collapse navbar-collapse" id="navbarCollapse" >
       <ul class="navbar-nav mr-auto" *ngIf="accountService.isLogin">
         <li class="nav-item">
-          <a class="nav-link" routerLinkActive="active" routerLink="/members">Matchs <span class="sr-only">(current)</span></a>
+          <a class="nav-link" routerLinkActive="active" routerLink="/members">Làm quen<span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/lists" routerLinkActive="active">List</a>
+          <a class="nav-link" routerLink="/lists" routerLinkActive="active">Danh sách</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link " routerLink="/messages" routerLinkActive="active">Messages</a>
+          <a class="nav-link " routerLink="/messages" routerLinkActive="active">Tin nhắn</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link " (click)="logout()">Logout</a>
+          <a class="nav-link " (click)="logout()">Đăng xuất</a>
         </li>
       </ul>
 
@@ -25,7 +25,7 @@
       <div class="dropdown" *ngIf="accountService.isLogin" dropdown>
         <a class="dropdown-toggle text-light" dropdownToggle>Xin chào {{username}}</a>
         <div class="dropdown-menu mt-3" *dropdownMenu>
-          <a href="" class="dropdown-item">Sửa thông tin cá nhân</a>
+          <a routerLink="/member/edit" class="dropdown-item">Sửa thông tin cá nhân</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" (click)="logout()">Logout</a>
         </div>
