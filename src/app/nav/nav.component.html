@@ -23,7 +23,7 @@
       <ul class="navbar-nav mr-auto" *ngIf="!accountService.isLogin"></ul>
 
       <div class="dropdown" *ngIf="accountService.isLogin" dropdown>
-        <img src="{{(this.user$ | async)?.photoUrl}}" alt="{{(this.user$ |async)?.photoUrl}}">
+        <img src="{{(this.user$ | async)?.photoUrl}}" alt="{{(this.user$ |async)?.photoUrl}}" onerror="this.src='./assets/user.png'">
 
         <a class="dropdown-toggle ml-2 text-light" dropdownToggle>Xin chào {{(this.user$ | async)?.username }}</a>
         <div class="dropdown-menu mt-3" *dropdownMenu>

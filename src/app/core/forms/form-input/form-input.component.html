@@ -1,0 +1,13 @@
+<div class="form-group">
+  <input
+    [class.is-invalid]="ngControl?.invalid && ngControl?.touched"
+    class="form-control" type="{{type}}" name="confirmPassword" [formControl]="getControl()"  placeholder="{{label}}">
+  <div *ngIf="ngControl?.control?.errors?.required"
+       class="invalid-feedback">Vui lòng nhập {{label}}</div>
+  <div *ngIf="ngControl?.control?.errors?.minlength"
+       class="invalid-feedback">{{label}} phải trên {{ngControl?.control?.errors?.minlength["requiredLength"]}}</div>
+  <div *ngIf="ngControl?.control?.errors?.maxlength"
+       class="invalid-feedback">{{label}} phải dưới {{ngControl?.control?.errors?.maxlength["requiredLength"]}}</div>
+  <div *ngIf="ngControl?.control?.errors?.isMatching"
+       class="invalid-feedback">Mật khẩu không khớp</div>
+</div>

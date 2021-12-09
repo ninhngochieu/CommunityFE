@@ -1,22 +1,47 @@
-<form (ngSubmit)="register()" #registerForm="ngForm">
+<form (ngSubmit)="register()" [formGroup]="registerForm">
   <h2 class="text-center text-primary">Đăng kí</h2>
   <hr>
-  <div class="form-group">
-    <input type="text" class="form-control" name="usernamme" [(ngModel)]="model.username" placeholder="username">
-  </div>
+<!--  <div class="form-group">-->
+<!--    <input [class.is-invalid]="registerForm.get('username')?.errors && registerForm.get('username')?.touched" type="text" class="form-control" name="username" formControlName="username" placeholder="Username">-->
+<!--    <div class="invalid-feedback">Vui lòng nhập tài khoản</div>-->
+<!--  </div>-->
+
+<!--  <div class="form-group">-->
+<!--    <input-->
+<!--      [class.is-invalid]="registerForm.get('password')?.errors && registerForm.get('password')?.touched"-->
+<!--      class="form-control" type="password" name="password" formControlName="password" placeholder="Password">-->
+<!--    <div *ngIf="registerForm.get('password')?.hasError('required')"-->
+<!--         class="invalid-feedback">Vui lòng nhập mật khẩu</div>-->
+<!--    <div *ngIf="registerForm.get('password')?.hasError('minlength')"-->
+<!--         class="invalid-feedback">Mật khẩu quá ngắn</div>-->
+<!--    <div *ngIf="registerForm.get('password')?.hasError('maxlength')"-->
+<!--         class="invalid-feedback">Mật khẩu quá dài</div>-->
+<!--  </div>-->
+
+<!--  <div class="form-group">-->
+<!--    <input-->
+<!--      [class.is-invalid]="registerForm.get('confirmPassword')?.errors && registerForm.get('confirmPassword')?.touched"-->
+<!--      class="form-control" type="password" name="confirmPassword" formControlName="confirmPassword"  placeholder="Confirm password">-->
+<!--    <div *ngIf="registerForm.get('confirmPassword')?.hasError('required')"-->
+<!--      class="invalid-feedback">Vui lòng nhập lại mật khẩu</div>-->
+<!--    <div *ngIf="registerForm.get('confirmPassword')?.hasError('isMatching')"-->
+<!--         class="invalid-feedback">Mật khẩu không khớp</div>-->
+<!--  </div>-->
 
   <div class="form-group">
-    <label for="">Bạn thích ai nhất</label>
-    <select name="" id="" class="form-control">
-      <option *ngFor="let user of this.userFromHome">
-        {{user.userName}}
-      </option>
-    </select>
+    <label for="" class="custom-control-label" style="margin-right: 10px">Giới tính</label>
+    <label for="" class="custom-radio"><input type="radio" value="male" formControlName="gender">Nam</label>
+    <label for="" class="custom-radio"><input type="radio" value="female" formControlName="gender" class="ml-3">Nữ</label>
   </div>
 
-  <div class="form-group">
-    <input class="form-control" type="password" name="password" [(ngModel)]="model.password" placeholder="Password">
-  </div>
+  <app-form-input [formControl]="getControl('username')" [label]="'Username'"></app-form-input>
+  <app-form-input [formControl]="getControl('password')" [label]="'Password'" [type]="'password'"></app-form-input>
+  <app-form-input [formControl]="getControl('confirmPassword')" [label]="'Confirm Password'" [type]="'password'"></app-form-input>
+  <app-form-input [formControl]="getControl('knownAs')" [label]="'Biệt danh'"></app-form-input>
+  <app-form-date-input [formControl]="getControl('dateOfBirth')" [maxDate]="maxDate" [label]="'Ngày sinh'"></app-form-date-input>
+  <app-form-input [formControl]="getControl('city')" [label]="'Thành phố'"></app-form-input>
+  <app-form-input [formControl]="getControl('country')" [label]="'Quốc gia'"></app-form-input>
+
   <div class="form-group text-center">
     <button class="btn btn-success mr-2" type="submit">Đăng kí</button>
     <button class="btn btn-success mr-2" type="button" (click)="cancel()">Cancel</button>

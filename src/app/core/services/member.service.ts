@@ -41,4 +41,8 @@ export class MemberService {
   setMainPhoto(id: number) : Observable<void>{
     return this.httpClientService.request(Type.put, 'user/set-main-photo/'+id)
   }
+
+  deletePhoto(id: number): Observable<any> {
+    return this.httpClientService.request(Type.delete, 'user/delete-photo/'+id);
+  }
 }

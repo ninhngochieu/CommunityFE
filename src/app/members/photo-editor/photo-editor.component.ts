@@ -5,6 +5,7 @@ import {environment} from "../../../environments/environment";
 import {AccountService} from "../../core/services/account.service";
 import {User} from "../../core/model/User";
 import {MemberService} from "../../core/services/member.service";
+import {BehaviorSubject, Subject} from "rxjs";
 
 @Component({
   selector: 'app-photo-editor',
@@ -19,6 +20,7 @@ export class PhotoEditorComponent implements OnInit {
 
   @Input()
   member!: Member;
+
 
   constructor(private accountService: AccountService, private memberService: MemberService) {
     this.user = this.accountService.hasLogin();
@@ -42,21 +44,29 @@ export class PhotoEditorComponent implements OnInit {
       autoUpload: false,
       maxFileSize: 10*1024*1024
     })
+
     this.uploader.onAfterAddingFile = (file) =>{
       file.withCredentials = false;
     }
+
     this.uploader.onSuccessItem = (item, res, status, headers) => {
       if (res){
         const photo = JSON.parse(res);
+        if (this.member.photos.length == 0){
+          this.user.photoUrl = photo.url;
+          this.accountService.logout()
+          this.accountService.createSessionUser(this.user);
+          this.accountService.userSubject.next(this.user);
+        }
         this.member.photos.push(photo)
       }
     }
+
   }
   setMainPhoto(photo: Photo){
     this.memberService.setMainPhoto(photo.id).subscribe(() => {
       this.user.photoUrl = photo.url;
       this.member.photoUrl = photo.url;
-      console.log(this.user)
       this.accountService.logout();
       this.accountService.createSessionUser(this.user);
       this.member.photos.forEach(p => {
@@ -66,4 +76,9 @@ export class PhotoEditorComponent implements OnInit {
     });
   }
 
+  deletePhoto(id: number) {
+    this.memberService.deletePhoto(id).subscribe(() => {
+      this.member.photos = this.member.photos.filter(x=>x.id !== id);
+    });
+  }
 }

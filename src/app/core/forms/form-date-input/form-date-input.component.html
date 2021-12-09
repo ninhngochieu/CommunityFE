@@ -1,0 +1,5 @@
+<div class="form-group">
+  <input type="text" [class.is-invalid]="getControl().touched && getControl().invalid" class="form-control" [formControl]="getControl()" placeholder="{{label}}"
+         bsDatepicker [bsConfig]="bsConfig" [maxDate]="maxDate">
+  <div *ngIf="getControl().errors?.required" class="invalid-feedback">Vui lòng chọn {{label}}</div>
+</div>
