@@ -1,6 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import { Subscription } from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {AccountService} from "../../core/services/account.service";
+import {MemberService} from "../../core/services/member.service";
+import {Member} from "../../core/model/Member";
 
 @Component({
   selector: 'app-member-list',
@@ -9,21 +11,16 @@ import {AccountService} from "../../core/services/account.service";
 
 })
 export class MemberListComponent implements OnInit, OnDestroy {
-  members = [];
   private Subscription!: Subscription;
+  member$!: Observable<Member[]>;
 
-  constructor(private accountService: AccountService) { }
+  constructor(private accountService: AccountService, private memberService: MemberService) { }
 
   ngOnInit(): void {
-    if (this.members.length == 0) {
-      this.Subscription = this.accountService.getUserList().subscribe(m => {
-        this.members = m;
-      })
-    }
+      this.member$ = this.memberService.getMemberList();
   }
 
   ngOnDestroy(): void {
-    this.Subscription.unsubscribe()
   }
 
 }

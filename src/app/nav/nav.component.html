@@ -23,7 +23,9 @@
       <ul class="navbar-nav mr-auto" *ngIf="!accountService.isLogin"></ul>
 
       <div class="dropdown" *ngIf="accountService.isLogin" dropdown>
-        <a class="dropdown-toggle text-light" dropdownToggle>Xin chào {{username}}</a>
+        <img src="{{(this.user$ | async)?.photoUrl}}" alt="{{(this.user$ |async)?.photoUrl}}">
+
+        <a class="dropdown-toggle ml-2 text-light" dropdownToggle>Xin chào {{(this.user$ | async)?.username }}</a>
         <div class="dropdown-menu mt-3" *dropdownMenu>
           <a routerLink="/member/edit" class="dropdown-item">Sửa thông tin cá nhân</a>
           <div class="dropdown-divider"></div>

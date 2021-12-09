@@ -3,6 +3,7 @@ import {AccountService} from "../core/services/account.service";
 import {map} from "rxjs/operators";
 import {User} from "../core/model/User";
 import {Router} from "@angular/router";
+import {ReplaySubject} from "rxjs";
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.component.html',
@@ -14,9 +15,12 @@ export class NavComponent implements OnInit {
     password: '',
 
   };
-  username = "";
+  user!: User;
+  user$: ReplaySubject<User>;
 
-  constructor(public accountService: AccountService, private router:Router) { }
+  constructor(public accountService: AccountService, private router:Router) {
+    this.user$ = this.accountService.userSubject;
+  }
 
   ngOnInit(): void {
     this.initUser();
@@ -36,7 +40,7 @@ export class NavComponent implements OnInit {
     let user = this.accountService.hasLogin();
     if(user){
       this.accountService.isLogin = true;
-      this.username = user.username
+      this.user = user;
     }
   }
 }

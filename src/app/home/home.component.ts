@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {User} from "../core/model/User";
 import {AccountService} from "../core/services/account.service";
 import {Member} from "../core/model/Member";
+import {MemberService} from "../core/services/member.service";
 
 @Component({
   selector: 'app-home',
@@ -11,23 +12,14 @@ import {Member} from "../core/model/Member";
 export class HomeComponent implements OnInit {
   public isRegister: boolean = false;
   users!: Member[];
-  constructor(private accountService: AccountService) { }
+  constructor(private accountService: AccountService, private memberService: MemberService) { }
 
   ngOnInit(): void {
-    this.getUsers();
   }
 
   showRegisterForm() {
     this.isRegister = !this.isRegister;
   }
-
-  private getUsers() {
-    this.accountService.getUserList().subscribe((users: Member[]) => {
-      this.users = users;
-      console.log(users)
-    });
-  }
-
   cancelRegisterHome($event: any) {
     this.isRegister = $event;
   }

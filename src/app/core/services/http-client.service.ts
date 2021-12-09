@@ -6,6 +6,7 @@ import {ToastrService} from "ngx-toastr";
 import {environment} from "../../../environments/environment";
 import {User} from "../model/User";
 import {Router} from "@angular/router";
+import {WaitingService} from "./waiting.service";
 
 export enum Type{
   post,
@@ -27,18 +28,20 @@ export class HttpClientService {
   private NOT_FOUND_ERROR = "Không tìm thấy tài nguyên";
   private SERVER_ERR = "Server xảy ra lỗi";
 
-  constructor(protected httpClient: HttpClient, private toastService:ToastrService, private router: Router) { }
+  constructor(protected httpClient: HttpClient, private toastService:ToastrService, private router: Router, private waitingService: WaitingService) { }
 
   request(type: Type, action: string, data?: any) {
+    let req;
     switch (type){
-      case Type.get: return this.get(action).pipe(map(m=> this.MapToData(m)), catchError(e => this.ProcessError(e)));
-      case Type.post: return this.post(action,data).pipe(map(m=> this.MapToData(m)), catchError(e => this.ProcessError(e)));
-      case Type.put: return this.put(action, data).pipe(map(m=> this.MapToData(m)), catchError(e => this.ProcessError(e)));
-      case Type.delete: return this.delete(action, data).pipe(map(m=> this.MapToData(m)), catchError(e => this.ProcessError(e)));
+      case Type.get: req = this.get(action).pipe(map(m=> HttpClientService.MapToData(m)), catchError(e => this.ProcessError(e)));break;
+      case Type.post:req = this.post(action,data).pipe(map(m=> HttpClientService.MapToData(m)), catchError(e => this.ProcessError(e)));break;
+      case Type.put: req = this.put(action, data).pipe(map(m=> HttpClientService.MapToData(m)), catchError(e => this.ProcessError(e)));break;
+      case Type.delete: req = this.delete(action, data).pipe(map(m=> HttpClientService.MapToData(m)), catchError(e => this.ProcessError(e)));break;
     }
+    return req;
   }
 
-  private MapToData(m: any) {
+  private static MapToData(m: any) {
     return m.data;
   }
 

@@ -6,7 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NavComponent } from './nav/nav.component';
 import { AppRoutingModule } from './app-routing.module';
 import {FormsModule} from "@angular/forms";
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {BsDropdownModule} from "ngx-bootstrap/dropdown";
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
@@ -21,6 +21,10 @@ import { MemberCardComponent } from './members/member-card/member-card.component
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import {NgxGalleryModule} from "@kolkov/ngx-gallery";
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
+import {LoadingInterceptor} from "./core/interceptors/loading.interceptor";
+import {NgxSpinnerModule} from "ngx-spinner";
+import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
+import {FileUploadModule} from "ng2-file-upload";
 
 @NgModule({
   declarations: [
@@ -34,18 +38,23 @@ import { MemberEditComponent } from './members/member-edit/member-edit.component
     MessagesComponent,
     NotFoundComponent,
     MemberCardComponent,
-    MemberEditComponent
+    MemberEditComponent,
+    PhotoEditorComponent
   ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    AppRoutingModule,
-    FormsModule,
-    SharedModule,
-    TabsModule.forRoot(),
-    NgxGalleryModule,
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        AppRoutingModule,
+        FormsModule,
+        SharedModule,
+        TabsModule.forRoot(),
+        NgxGalleryModule,
+        NgxSpinnerModule,
+        FileUploadModule,
+    ],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true}
   ],
-  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
