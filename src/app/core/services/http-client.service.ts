@@ -47,7 +47,8 @@ export class HttpClientService {
 
   private static MapToData(m: any) {
     let pagination = m as PaginationResult<any>
-    if (!pagination){
+    if (pagination.pagination == null){
+      console.log(m)
       return m.data;
     }
     return pagination;
@@ -58,24 +59,27 @@ export class HttpClientService {
   }
 
   private get(action: string, options: {} | undefined) {
+    let hasPagination = true;
     if (options == undefined){
-      options = {}
+      options = {};
+      hasPagination = false;
     }
     Object.assign(options, this.httpOptions());
     return this.httpClient.get(this.baseUrl + action, options).pipe(map(response => {
-      if(options == {}){
-        return response; //Neu khong chua option thi response la result
-      }else { // Chua header
+      if (hasPagination) { // Chua header
         let res = response as HttpResponse<any>;
 
         this.paginationResult.result = res.body.data;
 
         let pagination = res.headers.get('Pagination');
 
-        if (pagination !== null){
+        if (pagination !== null) {
           this.paginationResult.pagination = JSON.parse(pagination)
         }
         return this.paginationResult;
+
+      } else {
+        return response; //Neu khong chua option thi response la result
       }
     }))
   }

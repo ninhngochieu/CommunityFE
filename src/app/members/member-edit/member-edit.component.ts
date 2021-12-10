@@ -21,7 +21,7 @@ export class MemberEditComponent implements OnInit {
 
   private readonly user: User;
   member!: Member;
-  constructor(private memberService: MemberService, private accountService: AccountService,private toastrService: ToastrService) {
+  constructor(private memberService: MemberService, private accountService: AccountService,private toastService: ToastrService) {
     this.user = this.accountService.hasLogin();
   }
 
@@ -39,7 +39,7 @@ export class MemberEditComponent implements OnInit {
 
   updateMember() {
     this.memberService.updateMember(this.formEdit.value).subscribe(m=>{
-      this.toastrService.success("Profile update successfully")
+      this.toastService.success("Profile update successfully")
       this.formEdit.reset(this.member);
     });
   }
