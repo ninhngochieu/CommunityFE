@@ -3,6 +3,8 @@ import {HttpClientService, Type} from "./http-client.service";
 import {Observable, of} from "rxjs";
 import {Member} from "../model/Member";
 import {map} from "rxjs/operators";
+import {PaginationResult} from "../model/Pagination";
+import {HttpParams} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
@@ -28,14 +30,28 @@ export class MemberService {
     );
   }
 
-  getMemberList() {
-    if(this.members.length > 0) return of(this.members)
-    return this.httpClientService.request(Type.get, 'user').pipe(
-      map(m=> {
-        this.members = m;
-        return m;
-      })
-    );
+  getMemberList(page?: number, itemsPerPage?: number) {
+    let options;
+
+    let params = new HttpParams();
+    if (page!==undefined && itemsPerPage!==undefined){
+      params = params.append('pageNumber', page!.toString() );
+      params = params.append('pageSize', itemsPerPage!.toString())
+
+      options  = {
+        observe: 'response',
+        params
+      };
+    }
+
+    // if(this.members.length > 0) return of(this.members)
+    // return this.httpClientService.request(Type.get, 'user').pipe(
+    //   map(m=> {
+    //     this.members = m;
+    //     return m;
+    //   })
+    // );
+    return this.httpClientService.request(Type.get, 'user',{},options);
   }
 
   setMainPhoto(id: number) : Observable<void>{

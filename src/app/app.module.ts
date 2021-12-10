@@ -29,6 +29,7 @@ import {FormInputComponent} from "./core/forms/form-input/form-input.component";
 import {FormDateInputComponent} from "./core/forms/form-date-input/form-date-input.component";
 import {B} from "@angular/cdk/keycodes";
 import {BsDatepickerConfig, BsDatepickerModule} from "ngx-bootstrap/datepicker";
+import {PaginationModule} from "ngx-bootstrap/pagination";
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import {BsDatepickerConfig, BsDatepickerModule} from "ngx-bootstrap/datepicker";
         NgxSpinnerModule,
         FileUploadModule,
         ReactiveFormsModule,
-        BsDatepickerModule.forRoot()
+        BsDatepickerModule.forRoot(),
+        PaginationModule.forRoot()
     ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true}
