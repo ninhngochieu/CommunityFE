@@ -12,6 +12,7 @@ import {UserParams} from "../model/UserParams";
 })
 export class MemberService {
   private members: Member[] = [];
+  memberCache = new Map()
 
   constructor(private httpClientService : HttpClientService) { }
 
@@ -32,21 +33,29 @@ export class MemberService {
   }
 
   getMemberList(userParams: UserParams) {
-    let options;
+    let response = this.memberCache.get(Object.values(userParams).join("-"));
+    if (response){
+      return of(response)
+    }
 
+    let options;
     let params = new HttpParams();
     params = params.append('pageNumber', userParams.pageNumber.toString() );
     params = params.append('pageSize', userParams.pageSize.toString())
     params = params.append('gender', userParams.gender);
     params = params.append('minAge', userParams.minAge);
     params = params.append('maxAge', userParams.maxAge);
+    params = params.append('orderBy', userParams.orderBy)
 
     options  = {
       observe: 'response',
       params
     };
 
-    return this.httpClientService.request<Member[]>(Type.get, 'user',{},options);
+    return this.httpClientService.request<Member[]>(Type.get, 'user',{},options).pipe(map(response=>{
+      this.memberCache.set(Object.values(userParams).join("-"),response);
+      return response;
+    }));
   }
 
   setMainPhoto(id: number) : Observable<void>{

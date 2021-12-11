@@ -30,6 +30,8 @@ import {FormDateInputComponent} from "./core/forms/form-date-input/form-date-inp
 import {B} from "@angular/cdk/keycodes";
 import {BsDatepickerConfig, BsDatepickerModule} from "ngx-bootstrap/datepicker";
 import {PaginationModule} from "ngx-bootstrap/pagination";
+import {ButtonsModule} from "ngx-bootstrap/buttons";
+import {TimeagoModule} from "ngx-timeago";
 
 @NgModule({
   declarations: [
@@ -48,20 +50,20 @@ import {PaginationModule} from "ngx-bootstrap/pagination";
     FormInputComponent,
     FormDateInputComponent
   ],
-    imports: [
-        BrowserModule,
-        BrowserAnimationsModule,
-        AppRoutingModule,
-        FormsModule,
-        SharedModule,
-        TabsModule.forRoot(),
-        NgxGalleryModule,
-        NgxSpinnerModule,
-        FileUploadModule,
-        ReactiveFormsModule,
-        BsDatepickerModule.forRoot(),
-        PaginationModule.forRoot()
-    ],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    AppRoutingModule,
+    FormsModule,
+    SharedModule,
+    TabsModule.forRoot(),
+    NgxGalleryModule,
+    NgxSpinnerModule,
+    FileUploadModule,
+    ReactiveFormsModule,
+  ],
+  exports: [
+  ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true}
   ],

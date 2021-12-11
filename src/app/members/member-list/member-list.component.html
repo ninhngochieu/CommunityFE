@@ -26,6 +26,30 @@
     <button type="submit" class="btn btn-primary ml-1">Lọc</button>
     <button (click)="resetFilter()" type="submit" class="btn btn-info ml-1">Reset</button>
 
+    <div class="col">
+      <div class="btn-group float-right">
+        <button
+          class="btn btn-primary"
+          name="orderBy" (click)="loadMembers()"
+          [(ngModel)]="userParams.orderBy"
+          btnRadio="lastActive"
+          type="button"
+        >
+          Lần hoạt động cuối cùng
+        </button>
+
+        <button
+          class="btn btn-primary"
+          name="orderBy" (click)="loadMembers()"
+          [(ngModel)]="userParams.orderBy"
+          btnRadio="created"
+          type="button"
+        >
+          Thành viên mới
+        </button>
+      </div>
+    </div>
+
   </form>
 </div>
 

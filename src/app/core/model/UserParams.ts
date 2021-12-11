@@ -6,4 +6,5 @@ export class UserParams{
   maxAge =  99;
   pageNumber = 1;
   pageSize = 5;
+  orderBy = "lastActive";
 }

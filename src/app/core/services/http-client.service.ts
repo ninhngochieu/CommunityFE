@@ -52,7 +52,7 @@ export class HttpClientService {
   }
 
   private post(action: string, data: any, options: {} | undefined) {
-    return this.httpClient.post(this.baseUrl + action, data, this.httpOptions())
+    return this.httpClient.post(this.baseUrl + action, data, HttpClientService.httpOptions())
   }
 
   private get<T = void>(action: string, options: {} | undefined) {
@@ -61,7 +61,7 @@ export class HttpClientService {
       options = {};
       hasPagination = false;
     }
-    Object.assign(options, this.httpOptions());
+    Object.assign(options, HttpClientService.httpOptions());
     return this.httpClient.get(this.baseUrl + action, options).pipe(map(response => {
       if (hasPagination) { // Chua header
         let paginationResult: PaginationResult<T> = new PaginationResult<T>()
@@ -84,12 +84,12 @@ export class HttpClientService {
   }
 
   private put(action: string, data: any, options: {} | undefined) {
-    return this.httpClient.put(this.baseUrl + action, data, this.httpOptions())
+    return this.httpClient.put(this.baseUrl + action, data, HttpClientService.httpOptions())
 
   }
 
   private delete(action: string, data: any, options: {} | undefined) {
-    return this.httpClient.delete(this.baseUrl + action, this.httpOptions())
+    return this.httpClient.delete(this.baseUrl + action, HttpClientService.httpOptions())
 
   }
 
@@ -122,7 +122,7 @@ export class HttpClientService {
     return new Subject();
   }
 
-  private httpOptions() {
+  private static httpOptions() {
 
     let token = (JSON.parse(<string>localStorage.getItem("user")) as User)?.token ?? "";
 

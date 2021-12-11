@@ -10,10 +10,10 @@
           <strong>Tuổi:</strong><p>{{member.age}}</p>
         </div>
         <div>
-          <strong>Lần hoạt động cuối cùng:</strong><p>{{member.lastActive}}</p>
+          <strong>Lần hoạt động cuối cùng:</strong><p>{{member.lastActive | timeago}}</p>
         </div>
         <div>
-          <strong>Gia nhập:</strong><p>{{member.created}}</p>
+          <strong>Gia nhập:</strong><p>{{member.created | date: 'dd/MM/YYYY'}}</p>
         </div>
       </div>
       <div class="card-footer">
