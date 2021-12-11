@@ -8,7 +8,6 @@ import {User} from "../model/User";
 import {Router} from "@angular/router";
 import {WaitingService} from "./waiting.service";
 import {PaginationResult} from "../model/Pagination";
-import {Member} from "../model/Member";
 
 export enum Type{
   post,
@@ -30,14 +29,12 @@ export class HttpClientService {
   private NOT_FOUND_ERROR = "Không tìm thấy tài nguyên";
   private SERVER_ERR = "Server xảy ra lỗi";
 
-  paginationResult: PaginationResult<Member[]> = new PaginationResult<Member[]>();
-
   constructor(protected httpClient: HttpClient, private toastService:ToastrService, private router: Router, private waitingService: WaitingService) { }
 
-  request(type: Type, action: string, data?: {}, options?: {}) {
+  request<T = void>(type: Type, action: string, data?: {}, options?: {}) {
     let req;
     switch (type){
-      case Type.get: req = this.get(action, options).pipe(map(m=> HttpClientService.MapToData(m)), catchError(e => this.ProcessError(e)));break;
+      case Type.get: req = this.get<T>(action, options).pipe(map(m=> HttpClientService.MapToData(m)), catchError(e => this.ProcessError(e)));break;
       case Type.post:req = this.post(action,data,options).pipe(map(m=> HttpClientService.MapToData(m)), catchError(e => this.ProcessError(e)));break;
       case Type.put: req = this.put(action, data,options).pipe(map(m=> HttpClientService.MapToData(m)), catchError(e => this.ProcessError(e)));break;
       case Type.delete: req = this.delete(action, data,options).pipe(map(m=> HttpClientService.MapToData(m)), catchError(e => this.ProcessError(e)));break;
@@ -58,7 +55,7 @@ export class HttpClientService {
     return this.httpClient.post(this.baseUrl + action, data, this.httpOptions())
   }
 
-  private get(action: string, options: {} | undefined) {
+  private get<T = void>(action: string, options: {} | undefined) {
     let hasPagination = true;
     if (options == undefined){
       options = {};
@@ -67,16 +64,18 @@ export class HttpClientService {
     Object.assign(options, this.httpOptions());
     return this.httpClient.get(this.baseUrl + action, options).pipe(map(response => {
       if (hasPagination) { // Chua header
+        let paginationResult: PaginationResult<T> = new PaginationResult<T>()
+
         let res = response as HttpResponse<any>;
 
-        this.paginationResult.result = res.body.data;
+        paginationResult.result = res.body.data;
 
         let pagination = res.headers.get('Pagination');
 
         if (pagination !== null) {
-          this.paginationResult.pagination = JSON.parse(pagination)
+          paginationResult.pagination = JSON.parse(pagination)
         }
-        return this.paginationResult;
+        return paginationResult;
 
       } else {
         return response; //Neu khong chua option thi response la result

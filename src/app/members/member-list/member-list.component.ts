@@ -6,6 +6,7 @@ import {Member} from "../../core/model/Member";
 import {Pagination, PaginationResult} from "../../core/model/Pagination";
 import {PageChangedEvent} from "ngx-bootstrap/pagination";
 import {UserParams} from "../../core/model/UserParams";
+import {User} from "../../core/model/User";
 
 @Component({
   selector: 'app-member-list',
@@ -19,6 +20,11 @@ export class MemberListComponent implements OnInit, OnDestroy {
   members: Member[] = [];
   pagination!: Pagination;
   userParams = new UserParams();
+  genderList = [
+    {value: 'male', display: 'Male'},
+    {value: 'female', display: 'Female'},
+    {value: 'all', display: 'All'}
+  ]
 
   constructor(private accountService: AccountService, private memberService: MemberService) { }
 
@@ -30,7 +36,7 @@ export class MemberListComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
   }
 
-  private loadMembers() {
+  loadMembers() {
     this.memberService.getMemberList(this.userParams).subscribe((result: PaginationResult<Member[]>) => {
        this.members = result.result;
        this.pagination = result.pagination
@@ -39,6 +45,11 @@ export class MemberListComponent implements OnInit, OnDestroy {
 
   pageChange($event: PageChangedEvent) {
     this.userParams.pageNumber = $event.page;
+    this.loadMembers();
+  }
+
+  resetFilter(){
+    this.userParams = new UserParams();
     this.loadMembers();
   }
 }

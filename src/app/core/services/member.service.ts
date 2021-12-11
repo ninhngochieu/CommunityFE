@@ -38,13 +38,15 @@ export class MemberService {
     params = params.append('pageNumber', userParams.pageNumber.toString() );
     params = params.append('pageSize', userParams.pageSize.toString())
     params = params.append('gender', userParams.gender);
+    params = params.append('minAge', userParams.minAge);
+    params = params.append('maxAge', userParams.maxAge);
 
     options  = {
       observe: 'response',
       params
     };
 
-    return this.httpClientService.request(Type.get, 'user',{},options);
+    return this.httpClientService.request<Member[]>(Type.get, 'user',{},options);
   }
 
   setMainPhoto(id: number) : Observable<void>{
