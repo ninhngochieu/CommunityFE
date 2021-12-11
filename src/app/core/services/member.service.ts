@@ -5,6 +5,7 @@ import {Member} from "../model/Member";
 import {map} from "rxjs/operators";
 import {PaginationResult} from "../model/Pagination";
 import {HttpParams} from "@angular/common/http";
+import {UserParams} from "../model/UserParams";
 
 @Injectable({
   providedIn: 'root'
@@ -30,27 +31,19 @@ export class MemberService {
     );
   }
 
-  getMemberList(page?: number, itemsPerPage?: number) {
+  getMemberList(userParams: UserParams) {
     let options;
 
     let params = new HttpParams();
-    if (page!==undefined && itemsPerPage!==undefined){
-      params = params.append('pageNumber', page!.toString() );
-      params = params.append('pageSize', itemsPerPage!.toString())
+    params = params.append('pageNumber', userParams.pageNumber.toString() );
+    params = params.append('pageSize', userParams.pageSize.toString())
+    params = params.append('gender', userParams.gender);
 
-      options  = {
-        observe: 'response',
-        params
-      };
-    }
+    options  = {
+      observe: 'response',
+      params
+    };
 
-    // if(this.members.length > 0) return of(this.members)
-    // return this.httpClientService.request(Type.get, 'user').pipe(
-    //   map(m=> {
-    //     this.members = m;
-    //     return m;
-    //   })
-    // );
     return this.httpClientService.request(Type.get, 'user',{},options);
   }
 
