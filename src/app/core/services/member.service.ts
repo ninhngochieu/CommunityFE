@@ -12,13 +12,23 @@ import {UserParams} from "../model/UserParams";
 })
 export class MemberService {
   private members: Member[] = [];
+  private _userParams:UserParams;
+
   memberCache = new Map()
 
-  constructor(private httpClientService : HttpClientService) { }
+
+  constructor(private httpClientService : HttpClientService) {
+    this._userParams = new UserParams();
+  }
 
   getMember(username: string | null): Observable<Member> {
-    let member = this.members.find(x=>x.userName === username);
-    if (member!==undefined) return of(member);
+    let members = [...this.memberCache.values()]// Lấy key của cache --> Mảng dữ liệu
+      .reduce((array, element) => array.concat(element.result), [])
+      .find((member:Member) => member.userName==username); // merge mảng, với giá trị khởi tạo là []
+    console.log(members)
+
+    if(members) return of(members);
+
     return this.httpClientService.request(Type.get, 'user/'+username);
   }
 
@@ -30,6 +40,14 @@ export class MemberService {
         return m;
       })
     );
+  }
+
+  get userParams(): UserParams {
+    return this._userParams;
+  }
+
+  set userParams(value: UserParams) {
+    this._userParams = value;
   }
 
   getMemberList(userParams: UserParams) {
@@ -64,5 +82,9 @@ export class MemberService {
 
   deletePhoto(id: number): Observable<any> {
     return this.httpClientService.request(Type.delete, 'user/delete-photo/'+id);
+  }
+
+  resetUserParams() {
+    return new UserParams();
   }
 }

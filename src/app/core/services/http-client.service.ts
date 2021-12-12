@@ -45,7 +45,6 @@ export class HttpClientService {
   private static MapToData(m: any) {
     let pagination = m as PaginationResult<any>
     if (pagination.pagination == null){
-      console.log(m)
       return m.data;
     }
     return pagination;
