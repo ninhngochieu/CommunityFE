@@ -96,9 +96,12 @@ export class HttpClientService {
   private ProcessError(e: HttpErrorResponse) {
     console.log(e)
     if(e.error?.data){
-      this.toastService.error(e.error.data);
       switch (e.error.statusCode){
+        case 400:
+          this.toastService.warning(e.error.data);
+          break;
         case 404:
+          this.toastService.error(e.error.data);
           this.router.navigateByUrl("/notfound").then(r=>r);
           break
       }
