@@ -3,7 +3,6 @@ import {HttpClientService, Type} from "./http-client.service";
 import {Observable, of} from "rxjs";
 import {Member} from "../model/Member";
 import {map} from "rxjs/operators";
-import {PaginationResult} from "../model/Pagination";
 import {HttpParams} from "@angular/common/http";
 import {UserParams} from "../model/UserParams";
 
@@ -40,6 +39,14 @@ export class MemberService {
         return m;
       })
     );
+  }
+
+  addLike(username: string): Observable<string>{
+    return this.httpClientService.request(Type.post,'like/'+username, {});
+  }
+
+  getLike(predicate: string): Observable<any>{
+    return this.httpClientService.request(Type.get,'like?='+predicate )
   }
 
   get userParams(): UserParams {
