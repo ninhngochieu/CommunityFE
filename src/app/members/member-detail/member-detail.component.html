@@ -25,25 +25,25 @@
     </div>
   </div>
   <div class="col-8">
-    <tabset class="member-tabset">
-       <tab heading="Thông tin về {{member.knownAs}}">
+    <tabset class="member-tabset" #memberTabs>
+       <tab heading="Thông tin về {{member.knownAs}}" (selectTab)="onTabActivated($event)">
           <h4>Thông tin</h4>
          <p>{{member.introduction}}</p>
          <h4>Tìm kiếm</h4>
          <p>{{member.lookingFor}}</p>
        </tab>
 
-      <tab heading="Sở thích">
+      <tab heading="Sở thích" (selectTab)="onTabActivated($event)">
         <h4>Sở thích</h4>
         <p>{{member.interests}}</p>
       </tab>
 
-      <tab heading="Hình ảnh">
+      <tab heading="Hình ảnh" (selectTab)="onTabActivated($event)">
         <ngx-gallery [options]="galleryOptions" [images]="galleryImages" style="display:inline-block;margin-bottom: 20px;"></ngx-gallery>
       </tab>
 
-      <tab heading="Nhắn tin">
-        <app-member-messages [username]="member.userName"></app-member-messages>
+      <tab heading="Nhắn tin" (selectTab)="onTabActivated($event)">
+        <app-member-messages [messages]="messages" [username]="member.userName"></app-member-messages>
       </tab>
     </tabset>
   </div>
