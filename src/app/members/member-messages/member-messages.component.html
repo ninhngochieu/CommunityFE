@@ -1,1 +1,44 @@
-<p>member-messages works!</p>
+<div class="card">
+  <div class="card-body">
+    <div *ngIf="messages.length === 0">
+      Không có cuộc trò chuyện nào
+    </div>
+    <ul *ngIf="messages.length > 0" class="chat">
+      <li
+        *ngFor="let message of messages">
+        <div>
+          <span class="chat-img float-right">
+            <img class="rounded-circle" src="{{message.senderPhotoUrl}}" onerror="this.src='./assets/user.png'" alt="{{message.senderUsername}}">
+          </span>
+          <div class="chat-body">
+            <div class="header">
+              <small class="text-muted">
+                <span class="fa fa-clock-o">{{message.messageSent | timeago}}</span>
+
+                <span class="text-danger" *ngIf="!message.dateRead && message.senderUsername!== username">
+                  (chưa đọc)
+                </span>
+<!--                Kiểm tra người nhận đã đọc khi nào-->
+                <span class="text-success" *ngIf="message.dateRead && message.senderUsername!== username">
+                  (đã đọc {{message.dateRead | timeago}})
+                </span>
+<!--                Phải check cả người gửi, nếu không sẽ báo hết-->
+              </small>
+            </div>
+            <p>{{message.content}}</p>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="card-footer">
+    <div class="input-group">
+      <input type="text" class="form-control input-sm" placeholder="Gửi tin nhắn riêng">
+      <div class="input-group-append">
+        <button class="btn btn-primary" type="submit">
+          Gửi
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

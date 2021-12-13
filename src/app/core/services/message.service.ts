@@ -30,7 +30,7 @@ export class MessageService {
       return response;
     }));
   }
-  getMessageThread(username: string){
+  getMessageThread(username: string): Observable<Message[]>{
     return this.httpClientService.request(Type.get, 'message/thread/'+username)
   }
 }
