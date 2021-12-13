@@ -5,6 +5,7 @@ import {Member} from "../model/Member";
 import {map} from "rxjs/operators";
 import {HttpParams} from "@angular/common/http";
 import {UserParams} from "../model/UserParams";
+import {PaginationResult} from "../model/Pagination";
 
 @Injectable({
   providedIn: 'root'
@@ -45,8 +46,22 @@ export class MemberService {
     return this.httpClientService.request(Type.post,'like/'+username, {});
   }
 
-  getLike(predicate: string): Observable<any>{
-    return this.httpClientService.request(Type.get,'like?='+predicate )
+  getLike(predicate: string, pageNumber: number, pageSize: number): Observable<PaginationResult<Member[]>>{
+    // return this.httpClientService.request(Type.get,'like?predicate='+predicate )
+    let options;
+    let params = new HttpParams();
+    params = params.append('predicate', predicate)
+    params = params.append('pageNumber', pageNumber);
+    params = params.append('pageSize', pageSize);
+
+    options  = {
+      observe: 'response',
+      params
+    };
+
+    return this.httpClientService.request<PaginationResult<Member>[]>(Type.get, 'like',{},options).pipe(map(response=>{
+      return response;
+    }));
   }
 
   get userParams(): UserParams {
