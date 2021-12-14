@@ -1,4 +1,5 @@
-<div *ngIf="member" class="row">
+<!--<div *ngIf="member" class="row">-->
+<div class="row">
   <div class="col-4">
     <div class="card">
       <img src="{{member.photoUrl}}" alt="{{member.knownAs}}" onerror="this.src='./assets/user.png'" class="card-img-top img-thumbnail">
@@ -18,31 +19,31 @@
       </div>
       <div class="card-footer">
         <div class="btn-group d-flex">
-          <div class="btn btn-primary">Like</div>
-          <div class="btn btn-success">Message</div>
+          <div (click)="likeMember(member)" class="btn btn-primary">Like</div>
+          <div (click)="selectTab(3)" class="btn btn-success">Nhắn tin</div>
         </div>
       </div>
     </div>
   </div>
   <div class="col-8">
     <tabset class="member-tabset" #memberTabs>
-       <tab heading="Thông tin về {{member.knownAs}}" (selectTab)="onTabActivated($event)">
+       <tab heading="Thông tin về {{member.knownAs}}" (selectTab)="onTabActivated($event, 0)">
           <h4>Thông tin</h4>
          <p>{{member.introduction}}</p>
          <h4>Tìm kiếm</h4>
          <p>{{member.lookingFor}}</p>
        </tab>
 
-      <tab heading="Sở thích" (selectTab)="onTabActivated($event)">
+      <tab heading="Sở thích" (selectTab)="onTabActivated($event,1)">
         <h4>Sở thích</h4>
         <p>{{member.interests}}</p>
       </tab>
 
-      <tab heading="Hình ảnh" (selectTab)="onTabActivated($event)">
+      <tab heading="Hình ảnh" (selectTab)="onTabActivated($event,2)">
         <ngx-gallery [options]="galleryOptions" [images]="galleryImages" style="display:inline-block;margin-bottom: 20px;"></ngx-gallery>
       </tab>
 
-      <tab heading="Nhắn tin" (selectTab)="onTabActivated($event)">
+      <tab heading="Nhắn tin" (selectTab)="onTabActivated($event,3)">
         <app-member-messages [messages]="messages" [username]="member.userName"></app-member-messages>
       </tab>
     </tabset>

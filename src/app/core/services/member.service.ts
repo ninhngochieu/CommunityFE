@@ -25,8 +25,6 @@ export class MemberService {
     let members = [...this.memberCache.values()]// Lấy key của cache --> Mảng dữ liệu
       .reduce((array, element) => array.concat(element.result), [])
       .find((member:Member) => member.userName==username); // merge mảng, với giá trị khởi tạo là []
-    console.log(members)
-
     if(members) return of(members);
 
     return this.httpClientService.request(Type.get, 'user/'+username);

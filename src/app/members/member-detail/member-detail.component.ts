@@ -1,11 +1,12 @@
  import {Component, OnInit, ViewChild} from '@angular/core';
  import {MemberService} from "../../core/services/member.service";
- import {ActivatedRoute} from "@angular/router";
+ import {ActivatedRoute, Router} from "@angular/router";
  import {Member} from "../../core/model/Member";
  import {NgxGalleryAnimation, NgxGalleryImage, NgxGalleryOptions} from "@kolkov/ngx-gallery";
  import {TabDirective, TabsetComponent} from "ngx-bootstrap/tabs";
  import {MessageService} from "../../core/services/message.service";
  import {Message} from "../../core/model/Message";
+ import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-member-detail',
@@ -13,7 +14,7 @@
   styleUrls: ['./member-detail.component.css']
 })
 export class MemberDetailComponent implements OnInit {
-  @ViewChild('memberTabs')
+  @ViewChild('memberTabs', {static: true})
   memberTabs!: TabsetComponent;
 
   public member!: Member;
@@ -23,10 +24,21 @@ export class MemberDetailComponent implements OnInit {
   private activeTab!: TabDirective;
   messages: Message[]= [];
 
-  constructor(private memberService: MemberService,private activatedRoute:ActivatedRoute, private messageService: MessageService) { }
+  constructor(private memberService: MemberService,
+              private activatedRoute:ActivatedRoute,
+              private messageService: MessageService,
+              private toastService: ToastrService,
+              private router: Router
+              ) { }
 
   ngOnInit(): void {
-    this.loadMember()
+    // this.loadMember()
+    this.activatedRoute.data.subscribe(res => {
+      this.member =  res.member;
+    })
+    this.activatedRoute.queryParams.subscribe(p => {
+      this.selectTab(p.tab);
+    })
     this.galleryOptions = [
       {
         width:'500px',
@@ -37,6 +49,9 @@ export class MemberDetailComponent implements OnInit {
         preview: false
       }
     ]
+
+    this.galleryImages = this.getImages();
+
   }
 
   loadMember(){
@@ -66,10 +81,34 @@ export class MemberDetailComponent implements OnInit {
     })
   }
 
-  onTabActivated(data: TabDirective){
+  selectTab(tabId: number){
+    if (tabId){
+      this.memberTabs.tabs[tabId].active = true;
+    }
+  }
+
+  onTabActivated(data: TabDirective, tabNumber: number){
+    this.changeRouteParams(tabNumber)
     this.activeTab = data;
     if (this.activeTab.heading=="Nhắn tin" && this.messages.length ===0){
       this.loadMessages()
     }
   }
+
+  private changeRouteParams(tabNumber: number) {
+    this.router.navigate(
+      [],
+      {
+        relativeTo: this.activatedRoute,
+        queryParams: {tab: tabNumber},
+        queryParamsHandling: 'merge'
+      }).then(r =>r);
+  }
+
+  likeMember(member: Member) {
+    this.memberService.addLike(member.userName).subscribe(res => {
+      this.toastService.success(res + " "+ member.knownAs)
+    })
+  }
+
 }

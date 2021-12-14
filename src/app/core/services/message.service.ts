@@ -1,8 +1,7 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClientService, Type} from "./http-client.service";
 import {HttpParams} from "@angular/common/http";
 import {PaginationResult} from "../model/Pagination";
-import {Member} from "../model/Member";
 import {map} from "rxjs/operators";
 import {Message} from "../model/Message";
 import {Observable} from "rxjs";
@@ -32,5 +31,9 @@ export class MessageService {
   }
   getMessageThread(username: string): Observable<Message[]>{
     return this.httpClientService.request(Type.get, 'message/thread/'+username)
+  }
+
+  sendMessage(recipientUsername: string, content: string): Observable<Message>{
+    return this.httpClientService.request(Type.post, 'message', {recipientUsername, content});
   }
 }
