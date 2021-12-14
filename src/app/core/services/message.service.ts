@@ -36,4 +36,7 @@ export class MessageService {
   sendMessage(recipientUsername: string, content: string): Observable<Message>{
     return this.httpClientService.request(Type.post, 'message', {recipientUsername, content});
   }
+  deleteMessage(id: string): Observable<string>{
+    return this.httpClientService.request(Type.delete, 'message/'+id);
+  }
 }

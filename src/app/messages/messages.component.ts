@@ -15,6 +15,7 @@ export class MessagesComponent implements OnInit {
   pageNumber = 1;
   pageSize = 5;
   container = "unread";
+  loading = false;
   constructor(private messageService: MessageService) { }
 
   ngOnInit(): void {
@@ -22,9 +23,11 @@ export class MessagesComponent implements OnInit {
   }
 
   loadMessage() {
+    this.loading = true;
     this.messageService.getMessages(this.pageNumber, this.pageSize, this.container).subscribe(res => {
       this.pagination = res.pagination;
       this.messages = res.result;
+      this.loading = false;
     })
   }
 
@@ -33,5 +36,10 @@ export class MessagesComponent implements OnInit {
       this.pageNumber = $event.page;
       this.loadMessage();
     }
+  }
+  deleteMessage(id: string){
+    this.messageService.deleteMessage(id).subscribe(res=> {
+      this.messages.splice(this.messages.findIndex(m=>m.id == id), 1)
+    });
   }
 }
