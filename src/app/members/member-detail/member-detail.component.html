@@ -4,6 +4,9 @@
     <div class="card">
       <img src="{{member.photoUrl}}" alt="{{member.knownAs}}" onerror="this.src='./assets/user.png'" class="card-img-top img-thumbnail">
       <div class="card-body">
+        <div class="mb-2" *ngIf="(presenceService.onlineUser$|async)?.includes(member.userName)">
+          <i class="fa fa-user-circle text-success"></i>
+        </div>
         <div>
           <strong>Nơi ở:</strong><p>{{member.city}}, {{member.country}}</p>
         </div>

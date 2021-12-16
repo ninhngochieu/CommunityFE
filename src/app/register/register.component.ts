@@ -3,6 +3,7 @@ import {User} from "../core/model/User";
 import {AccountService} from "../core/services/account.service";
 import {Member} from "../core/model/Member";
 import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {PresenceService} from "../core/services/presence.service";
 
 @Component({
   selector: 'app-register',
@@ -19,7 +20,7 @@ export class RegisterComponent implements OnInit {
   registerForm!: FormGroup;
   maxDate!: Date;
 
-  constructor(private accountService: AccountService, private formBuilder: FormBuilder) { }
+  constructor(private accountService: AccountService, private formBuilder: FormBuilder, private presenceService: PresenceService) { }
 
   ngOnInit(): void{
     this.initializeForm();
@@ -32,6 +33,7 @@ export class RegisterComponent implements OnInit {
       if (user) {
         this.accountService.createSessionUser(user)
         alert("Đăng ký thành công")
+        this.presenceService.createHubConnection(user);
         this.cancel()
       }
     });

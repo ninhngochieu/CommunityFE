@@ -7,6 +7,7 @@
  import {MessageService} from "../../core/services/message.service";
  import {Message} from "../../core/model/Message";
  import {ToastrService} from "ngx-toastr";
+ import {PresenceService} from "../../core/services/presence.service";
 
 @Component({
   selector: 'app-member-detail',
@@ -28,7 +29,8 @@ export class MemberDetailComponent implements OnInit {
               private activatedRoute:ActivatedRoute,
               private messageService: MessageService,
               private toastService: ToastrService,
-              private router: Router
+              private router: Router,
+              public presenceService: PresenceService
               ) { }
 
   ngOnInit(): void {

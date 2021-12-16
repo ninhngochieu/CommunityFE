@@ -4,14 +4,44 @@ import {HttpParams} from "@angular/common/http";
 import {PaginationResult} from "../model/Pagination";
 import {map} from "rxjs/operators";
 import {Message} from "../model/Message";
-import {Observable} from "rxjs";
+import {BehaviorSubject, Observable} from "rxjs";
+import {environment} from "../../../environments/environment";
+import {User} from "../model/User";
+import {HubConnection, HubConnectionBuilder} from "@microsoft/signalr";
 
 @Injectable({
   providedIn: 'root'
 })
 export class MessageService {
 
+  hubUrl = environment.hubUrl;
+
+  private hubConnection!: HubConnection;
+  private messageThreadSource = new BehaviorSubject<Message[]>([])
+  messageThread$ = this.messageThreadSource.asObservable();
+
   constructor(private httpClientService: HttpClientService) { }
+
+  createHubConnection(user: User, otherUsername: string){
+    this.hubConnection = new HubConnectionBuilder()
+      .withUrl(this.hubUrl + 'message?user='+otherUsername, {
+        accessTokenFactory(): string | Promise<string> {
+          return user.token
+        }
+      })
+      .withAutomaticReconnect()
+      .build()
+
+    this.hubConnection.start().catch(err => console.log(err))
+
+    this.hubConnection.on("ReceiveMessageThread", message => {
+      this.messageThreadSource.next(message)
+    })
+  }
+
+  stopHubConnection(){
+    this.hubConnection.stop().then(r => r);
+  }
 
   getMessages(pageNumber: number, pageSize: number, container: string): Observable<PaginationResult<Message[]>>{
     let options;

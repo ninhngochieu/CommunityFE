@@ -4,6 +4,7 @@ import {User} from "../model/User";
 import {Router} from "@angular/router";
 import {ReplaySubject} from 'rxjs';
 import {MemberService} from "./member.service";
+import {PresenceService} from "./presence.service";
 
 @Injectable({
   providedIn: 'root'
@@ -13,22 +14,30 @@ export class AccountService {
   isLogin = false;
   userSubject = new ReplaySubject<User>(1);
 
-  constructor(protected httpClientService: HttpClientService, private memberService: MemberService) { }
+  constructor(protected httpClientService: HttpClientService, private memberService: MemberService, private presenceService: PresenceService) { }
 
   login(model: {}, router: Router, initUserCallBack: () => void): void{
     this.httpClientService.request(Type.post,this.action,model).subscribe((user: User) => {
       user.roles = this.getRoles(user);
       this.createSessionUser(user)
-      this.userSubject.next(user);
+      // this.userSubject.next(user);
+      this.presenceService.createHubConnection(user);
       initUserCallBack();
       router.navigateByUrl("/members").then(r => r)
     });
+  }
+
+  createSessionUser(user: User) {
+    this.isLogin = true
+    localStorage.setItem("user", JSON.stringify(user));
+    this.userSubject.next(user)
   }
 
   logout() {
     this.isLogin = false;
     localStorage.removeItem("user")
     this.memberService.memberCache.clear();
+    this.presenceService.stopConnection();
   }
 
   hasLogin() {
@@ -43,11 +52,6 @@ export class AccountService {
     return this.httpClientService.request(Type.post,'User/Register',model);
   }
 
-    createSessionUser(user: User) {
-    this.isLogin = true
-    localStorage.setItem("user", JSON.stringify(user));
-    this.userSubject.next(user)
-  }
   getDecodedToken(token: string){ // Get Payload
     return JSON.parse(atob(token.split(".")[1]))
   }

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {AccountService} from "./core/services/account.service";
+import {PresenceService} from "./core/services/presence.service";
 
 @Component({
   selector: 'app-root',
@@ -9,7 +10,9 @@ import {AccountService} from "./core/services/account.service";
 export class AppComponent {
   title = 'Frontend';
 
-  constructor(private accountService: AccountService) {
-    this.accountService.userSubject.next(this.accountService.hasLogin())
+  constructor(private accountService: AccountService, private presenceService: PresenceService) {
+    let user = this.accountService.hasLogin();
+    this.accountService.userSubject.next(user)
+    this.presenceService.createHubConnection(user);
   }
 }
