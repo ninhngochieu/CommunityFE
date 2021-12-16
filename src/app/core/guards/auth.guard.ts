@@ -8,7 +8,7 @@ import {ToastrService} from "ngx-toastr";
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
-  private AUTH_ERROR = "Bạn phải đăng nhập để có thể xem nội dung nayf";
+  private AUTH_ERROR = "Bạn phải đăng nhập để có thể xem nội dung này";
 
   constructor(private accountService: AccountService,private toastrService: ToastrService) {
   }

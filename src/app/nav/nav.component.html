@@ -16,6 +16,9 @@
           <a class="nav-link " routerLink="/messages" routerLinkActive="active">Tin nhắn</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link " *appHasRole="['Admin', 'Moderator']" routerLink="/admin" routerLinkActive="active">Admin</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link " (click)="logout()">Đăng xuất</a>
         </li>
       </ul>
@@ -25,7 +28,7 @@
       <div class="dropdown" *ngIf="accountService.isLogin" dropdown>
         <img src="{{(this.user$ | async)?.photoUrl}}" alt="{{(this.user$ |async)?.photoUrl}}" onerror="this.src='./assets/user.png'">
 
-        <a class="dropdown-toggle ml-2 text-light" dropdownToggle>Xin chào {{(this.user$ | async)?.knownAs }}</a>
+        <a class="dropdown-toggle ml-2 text-light" dropdownToggle>Xin chào {{(this.user$ | async)?.knownAs || (this.user$ | async)?.username | titlecase}}</a>
         <div class="dropdown-menu mt-3" *dropdownMenu>
           <a routerLink="/member/edit" class="dropdown-item">Sửa thông tin cá nhân</a>
           <div class="dropdown-divider"></div>

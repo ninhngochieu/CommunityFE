@@ -33,25 +33,36 @@ import {PaginationModule} from "ngx-bootstrap/pagination";
 import {ButtonsModule} from "ngx-bootstrap/buttons";
 import {TimeagoModule} from "ngx-timeago";
 import { MemberMessagesComponent } from './members/member-messages/member-messages.component';
+import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
+import {HasRoleDirective} from "./core/directives/has-role.directive";
+import { UserManagementComponent } from './admin/user-management/user-management.component';
+import { PhotoManagementComponent } from './admin/photo-management/photo-management.component';
+import { RolesModalComponent } from './modals/roles-modal/roles-modal.component';
+import {ModalModule} from "ngx-bootstrap/modal";
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    NavComponent,
-    HomeComponent,
-    RegisterComponent,
-    MemberListComponent,
-    MemberDetailComponent,
-    ListsComponent,
-    MessagesComponent,
-    NotFoundComponent,
-    MemberCardComponent,
-    MemberEditComponent,
-    PhotoEditorComponent,
-    FormInputComponent,
-    FormDateInputComponent,
-    MemberMessagesComponent
-  ],
+    declarations: [
+        AppComponent,
+        NavComponent,
+        HomeComponent,
+        RegisterComponent,
+        MemberListComponent,
+        MemberDetailComponent,
+        ListsComponent,
+        MessagesComponent,
+        NotFoundComponent,
+        MemberCardComponent,
+        MemberEditComponent,
+        PhotoEditorComponent,
+        FormInputComponent,
+        FormDateInputComponent,
+        MemberMessagesComponent,
+        AdminPanelComponent,
+        HasRoleDirective,
+        UserManagementComponent,
+        PhotoManagementComponent,
+        RolesModalComponent
+    ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -63,6 +74,7 @@ import { MemberMessagesComponent } from './members/member-messages/member-messag
     NgxSpinnerModule,
     FileUploadModule,
     ReactiveFormsModule,
+    ModalModule.forRoot()
   ],
   exports: [
   ],

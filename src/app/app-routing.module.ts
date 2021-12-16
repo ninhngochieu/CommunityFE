@@ -12,6 +12,8 @@ import {NotFoundComponent} from "./not-found/not-found.component";
 import {MemberEditComponent} from "./members/member-edit/member-edit.component";
 import {PreventUnsavedChangesGuard} from "./core/guards/prevent-unsaved-changes.guard";
 import {MemberDetailResolver} from "./core/resolver/member-detail.resolver";
+import {AdminPanelComponent} from "./admin/admin-panel/admin-panel.component";
+import {AdminGuard} from "./core/guards/admin.guard";
 
 
 let routers: Routes = [
@@ -22,6 +24,7 @@ let routers: Routes = [
       {path: "member/edit", component: MemberEditComponent, canDeactivate: [PreventUnsavedChangesGuard]},
       {path: "lists", component: ListsComponent},
       {path: "messages", component: MessagesComponent},
+      {path: "admin",component: AdminPanelComponent, canActivate: [AdminGuard]}
     ]
   },
   {path: "notfound", component: NotFoundComponent},

@@ -9,7 +9,6 @@ import {ButtonsModule} from "ngx-bootstrap/buttons";
 import {TimeagoModule} from "ngx-timeago";
 
 
-
 @NgModule({
   declarations: [
   ],

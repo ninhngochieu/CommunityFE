@@ -100,6 +100,9 @@ export class HttpClientService {
         case 400:
           this.toastService.warning(e.error.data);
           break;
+        case 401:
+          this.toastService.error(e.error.data);
+          break;
         case 404:
           this.toastService.error(e.error.data);
           this.router.navigateByUrl("/notfound").then(r=>r);
