@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h4 class="modal-title pull-left">Cập nhật role cho {{user.username}}</h4>
+  <h4 class="modal-title pull-left">Cập nhật role cho {{member.username}}</h4>
   <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
     <span aria-hidden="true" class="visually-hidden">&times;</span>
   </button>
@@ -9,10 +9,11 @@
     <div class="form-check" *ngFor="let role of roles">
       <input type="checkbox"
       class="form-check-input"
+             #input
              [checked]="role.checked"
              value="{{role.name}}"
              (change)="role.checked =!role.checked"
-             [disabled]="role.name ==='admin'"
+             [disabled]="!(this.user.roles | isManager: input.value)"
       >
       <label>{{role.name}}</label>
     </div>

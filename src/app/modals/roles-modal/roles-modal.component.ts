@@ -2,6 +2,7 @@ import { EventEmitter } from '@angular/core';
 import {Component, Input, OnInit} from '@angular/core';
 import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
 import {User} from "../../core/model/User";
+import {AccountService} from "../../core/services/account.service";
 
 @Component({
   selector: 'app-roles-modal',
@@ -11,9 +12,13 @@ import {User} from "../../core/model/User";
 export class RolesModalComponent implements OnInit {
 
   @Input() updateSelectedRoles = new EventEmitter()
-  user!: User;
+  member!: User;
   roles!: any[];
-  constructor(public bsModalRef: BsModalRef) { }
+  user: User;
+
+  constructor(public bsModalRef: BsModalRef, private  accountService: AccountService) {
+    this.user = accountService.hasLogin();
+  }
 
   ngOnInit(): void {
   }

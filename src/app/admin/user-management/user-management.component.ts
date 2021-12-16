@@ -10,7 +10,7 @@ import {RolesModalComponent} from "../../modals/roles-modal/roles-modal.componen
   styleUrls: ['./user-management.component.css']
 })
 export class UserManagementComponent implements OnInit {
-  users: User[] = [];
+  members: User[] = [];
   private bsModalRef!: BsModalRef<RolesModalComponent>;
 
   constructor(private adminService: AdminService, private bsModalService: BsModalService) { }
@@ -21,19 +21,18 @@ export class UserManagementComponent implements OnInit {
 
   getUsersWithRoles(){
     this.adminService.getUsersWithRoles().subscribe(user => {
-      this.users = user;
+      this.members = user;
     });
   }
 
-  openRolesModal(user: User) {
+  openRolesModal(member: User) {
     const config = {
       class: 'modal-dialog-centered',
       initialState: {
-        user,
-        roles: this.getRoleArray(user)
+        member,
+        roles: this.getRoleArray(member)
       }
     }
-    console.log(this.getRoleArray(user))
     this.bsModalRef = this.bsModalService.show(RolesModalComponent, config);
     this.bsModalRef.content?.updateSelectedRoles.subscribe(values => {
       // console.log(values)
@@ -41,8 +40,8 @@ export class UserManagementComponent implements OnInit {
         roles: [...values.filter((l:any)=>l.checked === true).map((l:any)=>l.name)]
       }
       if(rolesToUpdate){
-        this.adminService.updateRoles(user.username, rolesToUpdate.roles).subscribe(()=> {
-          user.roles = [...rolesToUpdate.roles]
+        this.adminService.updateRoles(member.username, rolesToUpdate.roles).subscribe(()=> {
+          member.roles = [...rolesToUpdate.roles]
         });
       }
     });

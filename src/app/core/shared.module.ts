@@ -7,10 +7,13 @@ import {BsDatepickerModule} from "ngx-bootstrap/datepicker";
 import {PaginationModule} from "ngx-bootstrap/pagination";
 import {ButtonsModule} from "ngx-bootstrap/buttons";
 import {TimeagoModule} from "ngx-timeago";
+import { IsManagerPipe } from './pipes/is-manager.pipe';
 
 
 @NgModule({
   declarations: [
+
+    IsManagerPipe
   ],
   imports: [
     CommonModule,
@@ -24,14 +27,15 @@ import {TimeagoModule} from "ngx-timeago";
     ButtonsModule.forRoot(),
     TimeagoModule.forRoot()
   ],
-  exports:[
-    HttpClientModule,
-    BsDropdownModule,
-    ToastrModule,
-    BsDatepickerModule,
-    PaginationModule,
-    ButtonsModule,
-    TimeagoModule
-  ]
+    exports: [
+        HttpClientModule,
+        BsDropdownModule,
+        ToastrModule,
+        BsDatepickerModule,
+        PaginationModule,
+        ButtonsModule,
+        TimeagoModule,
+        IsManagerPipe
+    ]
 })
 export class SharedModule { }
