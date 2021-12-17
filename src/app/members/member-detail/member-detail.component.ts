@@ -37,6 +37,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
               private accountService: AccountService
               ) {
     this.user = accountService.hasLogin();
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }
 
   ngOnDestroy(): void {
