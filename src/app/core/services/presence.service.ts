@@ -34,11 +34,17 @@ export class PresenceService {
         .catch(err => console.log(err))
 
       this.hubConnection.on("UserIsOnline", username => {
-        this.toastService.info(username + ' đã kết nối')
+        // this.toastService.info(username + ' đã kết nối')
+        this.onlineUser$.pipe(take(1)).subscribe(usernames => {
+          this.onlineUserSource.next([...usernames, username])
+        })
       })
 
       this.hubConnection.on("UserIsOffline", username => {
-        this.toastService.warning(username + ' đã thoát')
+        // this.toastService.warning(username + ' đã thoát')
+        this.onlineUser$.pipe(take(1)).subscribe(usernames => {
+          this.onlineUserSource.next([...usernames.filter(x=>x!==username)])
+        })
       })
 
       this.hubConnection.on("GetOnlineUsers", (username: []) => {
