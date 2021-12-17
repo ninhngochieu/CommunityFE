@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClientService, Type} from "./http-client.service";
 import {HttpParams} from "@angular/common/http";
 import {PaginationResult} from "../model/Pagination";
-import {map} from "rxjs/operators";
+import {map, take} from "rxjs/operators";
 import {Message} from "../model/Message";
 import {BehaviorSubject, Observable} from "rxjs";
 import {environment} from "../../../environments/environment";
@@ -34,13 +34,21 @@ export class MessageService {
 
     this.hubConnection.start().catch(err => console.log(err))
 
-    this.hubConnection.on("ReceiveMessageThread", message => {
-      this.messageThreadSource.next(message)
+    this.hubConnection.on("ReceiveMessageThread", (messages: []) => {
+      this.messageThreadSource.next(messages)
     })
+
+    this.hubConnection.on("NewMessage", message => {
+      this.messageThread$.pipe(take(1)).subscribe(messages => {
+        this.messageThreadSource.next([...messages, message]); // Nếu có 1 message mới, nó sẽ được gắn vô sau
+      });
+    });
   }
 
   stopHubConnection(){
-    this.hubConnection.stop().then(r => r);
+    if(this.hubConnection){
+      this.hubConnection.stop().then(r => r);
+    }
   }
 
   getMessages(pageNumber: number, pageSize: number, container: string): Observable<PaginationResult<Message[]>>{
@@ -63,8 +71,9 @@ export class MessageService {
     return this.httpClientService.request(Type.get, 'message/thread/'+username)
   }
 
-  sendMessage(recipientUsername: string, content: string): Observable<Message>{
-    return this.httpClientService.request(Type.post, 'message', {recipientUsername, content});
+  async sendMessage(recipientUsername: string, content: string): Promise<any>{
+    // return this.httpClientService.request(Type.post, 'message', {recipientUsername, content});\
+    return this.hubConnection.invoke('SendMessage', {recipientUsername, content}).catch(err => console.log(err));
   }
   deleteMessage(id: string): Observable<string>{
     return this.httpClientService.request(Type.delete, 'message/'+id);

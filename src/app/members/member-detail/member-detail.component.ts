@@ -1,4 +1,4 @@
- import {Component, OnInit, ViewChild} from '@angular/core';
+ import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
  import {MemberService} from "../../core/services/member.service";
  import {ActivatedRoute, Router} from "@angular/router";
  import {Member} from "../../core/model/Member";
@@ -8,13 +8,15 @@
  import {Message} from "../../core/model/Message";
  import {ToastrService} from "ngx-toastr";
  import {PresenceService} from "../../core/services/presence.service";
+ import {AccountService} from "../../core/services/account.service";
+ import {User} from "../../core/model/User";
 
 @Component({
   selector: 'app-member-detail',
   templateUrl: './member-detail.component.html',
   styleUrls: ['./member-detail.component.css']
 })
-export class MemberDetailComponent implements OnInit {
+export class MemberDetailComponent implements OnInit, OnDestroy {
   @ViewChild('memberTabs', {static: true})
   memberTabs!: TabsetComponent;
 
@@ -24,14 +26,22 @@ export class MemberDetailComponent implements OnInit {
   galleryImages!: NgxGalleryImage[];
   private activeTab!: TabDirective;
   messages: Message[]= [];
+  private readonly user: User;
 
   constructor(private memberService: MemberService,
               private activatedRoute:ActivatedRoute,
               private messageService: MessageService,
               private toastService: ToastrService,
               private router: Router,
-              public presenceService: PresenceService
-              ) { }
+              public presenceService: PresenceService,
+              private accountService: AccountService
+              ) {
+    this.user = accountService.hasLogin();
+  }
+
+  ngOnDestroy(): void {
+      this.messageService.stopHubConnection();
+    }
 
   ngOnInit(): void {
     // this.loadMember()
@@ -93,7 +103,10 @@ export class MemberDetailComponent implements OnInit {
     this.changeRouteParams(tabNumber)
     this.activeTab = data;
     if (this.activeTab.heading=="Nhắn tin" && this.messages.length ===0){
-      this.loadMessages()
+      // this.loadMessages()
+      this.messageService.createHubConnection(this.user, this.member.userName)
+    }else {
+      this.messageService.stopHubConnection();
     }
   }
 
